@@ -1,0 +1,62 @@
+pipeline {
+    agent {
+        label 'aa'
+    }
+
+    stages {
+        stage('checkout') {
+            steps {
+                
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/priya5502/JavaWebCalculator.git']])
+            }
+        }
+        stage('validate') {
+            steps {
+               sh 'mvn validate'
+            }
+        }
+
+        stage('compile') {
+            steps {
+               sh 'mvn compile'
+            }
+        }       
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }        
+        stage('package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('verify') {
+            steps {
+                 sh 'mvn verify'
+            }
+        }
+        stage('install') {
+            steps {
+                sh 'mvn install'
+            }
+        }
+        stage ('build the image and push the image') {
+            steps {
+           sh 'docker build -t image-name . '
+           
+            
+            }
+        }
+        stage ('deploy') {
+            steps {
+               sh  'docker run --name khaleel -d -p 8081:8080 image-name'
+            }
+        }
+    }
+}
+
+
+
+
+chmod 777 /var/run/docker.sock (permissions to docker)

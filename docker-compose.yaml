@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  vprofile:
+    build:
+      context: ./vprofile
+    container_name: vpro
+    ports:
+      - "8080:8080"
+
+  javaweb:
+    build:
+      context: ./javaweb
+    container_name: javaweb
+    ports:
+      - "8081:8080"
+  
